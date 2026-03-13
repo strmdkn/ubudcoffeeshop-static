@@ -814,7 +814,7 @@
       </div>
     </div>
     <div class="hero-cta">
-        <button onclick="document.getElementById('menu-modal').style.display='flex'">
+        <button class="btn btn-outline" onclick="document.getElementById('menu-modal').style.display='flex'">
   					View Complete Menu
 				</button>
     </div>
@@ -890,7 +890,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copy">© 2025 OROBORO COFFEE. All rights reserved.</p>
+        <p class="footer-copy">© 2026 OROBORO COFFEE. All rights reserved.</p>
         <p class="footer-made">Ubud, Bali, Indonesia</p>
       </div>
     </div>
@@ -920,12 +920,15 @@
     reveals.forEach(el => observer.observe(el));
   </script>
 	<div id="menu-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; align-items:center; justify-content:center;">
-  		<div style="position:relative; width:min(500px,95vw); max-height:95vh; overflow-y:auto;">
-    		<button onclick="document.getElementById('menu-modal').style.display='none'"
-      		style="position:fixed; top:16px; right:16px; background:#1a1612; color:#f5f0e8; border:none; font-size:1.4rem; width:36px; height:36px; border-													radius:50%; cursor:pointer; z-index:10000;">✕</button>
-    		<iframe src="oroboro-menu.html" style="width:100%; height:90vh; border:none; border-radius:2px; display:block;"></iframe>
-		</div>
-	</div>
+  <div style="position:relative; width:min(480px, 92vw);">
+    <button onclick="document.getElementById('menu-modal').style.display='none'"
+      style="position:absolute; top:-40px; right:0; background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">
+      ✕ close
+    </button>
+    <iframe src="/oroboro-menu.html" style="width:100%; height:85vh; border:none; border-radius:2px;"></iframe>
+  </div>
+</div>
+
 
 </body>
 </html>

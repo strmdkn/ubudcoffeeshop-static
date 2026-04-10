@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OROBORO COFFEE — Buy Beans</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5EFE0;
+      --warm-white: #FAF7F0;
+      --espresso: #1A0F08;
+      --brown-deep: #2C1810;
+      --brown-mid: #6B3D2A;
+      --caramel: #C47A3A;
+      --gold: #D4A843;
+      --sage: #7A8C6E;
+      --terracotta: #C4612A;
+      --text-dark: #1A0F08;
+      --text-mid: #4A2E1E;
+      --text-light: #8A6A58;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(245, 239, 224, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(196, 122, 58, 0.15);
+    }
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      color: var(--espresso);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--caramel); }
+
+    /* ── HERO ── */
+    .shop-hero {
+      min-height: 38vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3rem 4rem;
+      background: var(--warm-white);
+      position: relative;
+      overflow: hidden;
+      padding-top: 6rem;
+    }
+    .shop-hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      top: -200px; right: -100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,122,58,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .shop-hero::after {
+      content: '';
+      position: absolute;
+      width: 350px; height: 350px;
+      bottom: -80px; left: -80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(122, 140, 110, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .shop-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .shop-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .shop-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--espresso);
+      opacity: 0;
+      animation: fadeUp 0.9s 0.35s forwards;
+    }
+    .shop-title em {
+      font-style: normal;
+      font-weight: 300;
+      color: var(--caramel);
+    }
+    .shop-subtitle {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--text-mid);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-top: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+
+    /* ── PRODUCTS SECTION ── */
+    .products {
+      padding: 5rem 3rem 7rem;
+      background: var(--cream);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* ── PRODUCT CARD ── */
+    .product-card {
+      background: var(--warm-white);
+      border: 1px solid rgba(196,122,58,0.15);
+      border-radius: 4px;
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    .product-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.75s ease, transform 0.75s ease, box-shadow 0.3s, border-color 0.3s;
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--caramel);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
+    }
+    .product-card:hover {
+      transform: translateY(-4px) !important;
+      box-shadow: 0 16px 48px rgba(26,15,8,0.1);
+      border-color: rgba(196,122,58,0.3);
+    }
+    .product-card:hover::before { transform: scaleX(1); }
+
+    /* Special card for single origin */
+    .product-card.featured {
+      border-color: rgba(196,122,58,0.3);
+      background: linear-gradient(135deg, var(--warm-white) 0%, rgba(212,168,67,0.06) 100%);
+    }
+    .product-card.featured::after {
+      content: 'SINGLE ORIGIN';
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      background: rgba(212,168,67,0.12);
+      padding: 0.3rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    .product-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--caramel);
+    }
+    .product-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--espresso);
+      line-height: 1.2;
+    }
+    .product-origin {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+    .product-desc {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: var(--text-mid);
+      font-weight: 300;
+      flex: 1;
+    }
+
+    .product-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(196,122,58,0.1);
+      margin-top: auto;
+    }
+    .product-price {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .price-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .price-amount {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--espresso);
+      letter-spacing: -0.02em;
+    }
+    .price-shipping {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
+      margin-top: 0.1rem;
+    }
+
+    .btn-buy {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.4rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+      background: var(--espresso);
+      color: var(--cream);
+      white-space: nowrap;
+    }
+    .btn-buy:hover {
+      background: var(--brown-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(26,15,8,0.2);
+    }
+
+    /* ── MULTI-ORDER NOTICE ── */
+    .multi-order-notice {
+      margin-top: 3.5rem;
+      padding: 2rem 2.5rem;
+      background: var(--brown-deep);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .notice-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .notice-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .notice-body {
+      font-size: 0.9rem;
+      color: rgba(245,239,224,0.8);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .notice-body strong {
+      color: var(--cream);
+      font-weight: 500;
+    }
+    .btn-instagram {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      border: 1.5px solid rgba(245,239,224,0.3);
+      color: var(--cream);
+      transition: all 0.25s;
+      white-space: nowrap;
+    }
+    .btn-instagram:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--espresso);
+      color: var(--cream);
+      padding: 4rem 3rem 2.5rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(245,239,224,0.1);
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: var(--cream);
+    }
+    .footer-socials { display: flex; flex-direction: column; gap: 1rem; }
+    .footer-social-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .footer-social-links { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: rgba(245,239,224,0.65);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-social-link:hover { color: var(--gold); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      color: rgba(245,239,224,0.3);
+      text-transform: uppercase;
+    }
+    .footer-made {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: rgba(245,239,224,0.2);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .shop-hero { padding: 6rem 1.5rem 3rem; }
+      .products { padding: 4rem 1.5rem 5rem; }
+      .products-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 3rem 1.5rem 2rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .products-grid { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; }
+      .multi-order-notice { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">OROBORO COFFEE - COFFEE SHOP IN UBUD</a>
+    <ul class="nav-links">
+      <li><a href="/#find-us">Find Us</a></li>
+      <li><a href="/#menu">Menu</a></li>
+      <li><a href="/#location">Location</a></li>
+      <li><a href="/shop.html" class="active">Buy Beans</a></li>
+      <li><a href="https://www.instagram.com/oroboro__" target="_blank" rel="noopener">Instagram</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="shop-hero">
+    <div class="shop-hero-inner">
+      <p class="shop-eyebrow">Oroboro Coffee — Ubud, Bali</p>
+      <h1 class="shop-title">Buy our<br><em>beans.</em></h1>
+      <p class="shop-subtitle">
+        Roasted in small batches in Ubud. Shipped globally. Each bag is sealed fresh and sent within 48 hours of your order.
+      </p>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products">
+    <div class="products-grid">
+
+      <!-- 250g House Blend -->
+      <div class="product-card">
+        <p class="product-tag">House Blend · 250g</p>
+        <h2 class="product-name">House Blend</h2>
+        <p class="product-origin">Bali, Indonesia &amp; South America<br>Medium roast · Espresso &amp; filter</p>
+        <p class="product-desc">
+          Our everyday blend — sweet, balanced, and built for whatever you're brewing. Chocolate-forward with a clean finish. The one we pull every morning at the shop.
+        </p>
+        <div class="product-price-row">
+          <div class="product-price">
+            <span class="price-label">Price</span>
+            <span class="price-amount">Rp 275.000</span>
+            <span class="price-shipping">+ Rp 100.000 shipping</span>
+          </div>
+          <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
+        </div>
+      </div>
+
+      <!-- 1kg House Blend -->
+      <div class="product-card">
+        <p class="product-tag">House Blend · 1kg</p>
+        <h2 class="product-name">House Blend</h2>
+        <p class="product-origin">Bali, Indonesia &amp; South America<br>Medium roast · Espresso &amp; filter</p>
+        <p class="product-desc">
+          The full kilo for serious drinkers. Same blend, better value. Great if you're opening a café or just go through a lot of coffee. We respect that.
+        </p>
+        <div class="product-price-row">
+          <div class="product-price">
+            <span class="price-label">Price</span>
+            <span class="price-amount">Rp 650.000</span>
+            <span class="price-shipping">+ Rp 150.000 shipping</span>
+          </div>
+          <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
+        </div>
+      </div>
+
+      <!-- 250g Decaf -->
+      <div class="product-card">
+        <p class="product-tag">Decaf Blend · 250g</p>
+        <h2 class="product-name">Decaf Blend</h2>
+        <p class="product-origin">Colombia &amp; Brazil<br>Swiss Water Process · Medium roast</p>
+        <p class="product-desc">
+          Decaf that doesn't taste like an apology. Swiss Water processed to keep the flavour intact — smooth, nutty, and genuinely worth drinking at midnight.
+        </p>
+        <div class="product-price-row">
+          <div class="product-price">
+            <span class="price-label">Price</span>
+            <span class="price-amount">Rp 350.000</span>
+            <span class="price-shipping">+ Rp 100.000 shipping</span>
+          </div>
+          <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
+        </div>
+      </div>
+
+      <!-- 1kg Decaf -->
+      <div class="product-card">
+        <p class="product-tag">Decaf Blend · 1kg</p>
+        <h2 class="product-name">Decaf Blend</h2>
+        <p class="product-origin">Colombia &amp; Brazil<br>Swiss Water Process · Medium roast</p>
+        <p class="product-desc">
+          A kilo of our best decaf. If you're stocking up a café or running an evening menu, this is the move. Same quality, full kilo.
+        </p>
+        <div class="product-price-row">
+          <div class="product-price">
+            <span class="price-label">Price</span>
+            <span class="price-amount">Rp 800.000</span>
+            <span class="price-shipping">+ Rp 150.000 shipping</span>
+          </div>
+          <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
+        </div>
+      </div>
+
+      <!-- Panama La Esmeralda -->
+      <div class="product-card featured">
+        <p class="product-tag">Single Origin · 100g</p>
+        <h2 class="product-name">Panama La Esmeralda<br>Diamond Mountain Natural</h2>
+        <p class="product-origin">Boquete, Chiriquí, Panama<br>Natural process · Light roast</p>
+        <p class="product-desc">
+          One of the most storied lots in specialty coffee — Hacienda La Esmeralda's Diamond Mountain natural. Jasmine, stonefruit, and a clarity that stays with you. 100g only; brew with intention.
+        </p>
+        <div class="product-price-row">
+          <div class="product-price">
+            <span class="price-label">Price</span>
+            <span class="price-amount">Rp 600.000</span>
+            <span class="price-shipping">+ Rp 100.000 shipping</span>
+          </div>
+          <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Multi-order notice -->
+    <div class="multi-order-notice">
+      <div class="notice-text">
+        <span class="notice-label">Ordering multiple items?</span>
+        <p class="notice-body">
+          Message us on Instagram and we'll put together a <strong>combined order with better shipping rates</strong>. We reply fast.
+        </p>
+      </div>
+      <a href="https://www.instagram.com/oroboro__" target="_blank" rel="noopener" class="btn-instagram">
+        @oroboro__ →
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <p class="footer-logo">OROBORO COFFEE</p>
+        </div>
+        <div class="footer-socials">
+          <p class="footer-social-label">Connect</p>
+          <div class="footer-social-links">
+            <a href="https://www.instagram.com/oroboro__" target="_blank" rel="noopener" class="footer-social-link">
+              <span>📷</span> @oroboro__ on Instagram
+            </a>
+            <a href="https://r.grab.com/o/7RnI3e6f" target="_blank" rel="noopener" class="footer-social-link">
+              <span>🛵</span> Order on Grab
+            </a>
+            <a href="https://maps.app.goo.gl/EFhvw7XyxNbK826m7" target="_blank" rel="noopener" class="footer-social-link">
+              <span>📍</span> Jl. Tirta Tawar No.15B, Petulu, Ubud
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2026 OROBORO COFFEE. All rights reserved.</p>
+        <p class="footer-made">Ubud, Bali, Indonesia</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const cards = document.querySelectorAll('.product-card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    cards.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

@@ -214,6 +214,7 @@
       position: absolute;
       top: 1.5rem;
       right: 1.5rem;
+      z-index: 2;
       font-family: 'Space Mono', monospace;
       font-size: 0.55rem;
       letter-spacing: 0.18em;
@@ -221,6 +222,60 @@
       background: rgba(212,168,67,0.12);
       padding: 0.3rem 0.6rem;
       border-radius: 2px;
+    }
+
+    /* ── PRODUCT IMAGES ── */
+    .product-img {
+      width: calc(100% + 5rem);
+      margin: -2.5rem -2.5rem 0 -2.5rem;
+      overflow: hidden;
+      border-radius: 4px 4px 0 0;
+    }
+    .product-img img {
+      width: 100%;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .product-img.portrait img {
+      height: 240px;
+      object-fit: cover;
+      object-position: center;
+    }
+    .product-card:hover .product-img img {
+      transform: scale(1.03);
+    }
+
+    /* Panama wide landscape spans full width, card is horizontal */
+    .product-card.wide {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      gap: 0;
+      padding: 0;
+    }
+    .product-card.wide .product-img {
+      width: 100%;
+      margin: 0;
+      border-radius: 4px 0 0 4px;
+      align-self: stretch;
+    }
+    .product-card.wide .product-img img {
+      height: 100%;
+      min-height: 280px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 3px 0 0 3px;
+    }
+    .product-card.wide .product-body {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    /* Non-wide cards need a body wrapper for padding after image */
+    .product-card:not(.wide) .product-body {
+      display: contents;
     }
 
     .product-tag {
@@ -448,12 +503,25 @@
       .products { padding: 4rem 1.5rem 5rem; }
       .products-grid { grid-template-columns: 1fr 1fr; }
       footer { padding: 3rem 1.5rem 2rem; }
+      .product-card.wide {
+        grid-column: span 2;
+        grid-template-columns: 1fr;
+      }
+      .product-card.wide .product-img {
+        border-radius: 4px 4px 0 0;
+      }
+      .product-card.wide .product-img img {
+        height: 220px;
+        min-height: unset;
+        border-radius: 3px 3px 0 0;
+      }
     }
     @media (max-width: 600px) {
       .nav-links { display: none; }
       .products-grid { grid-template-columns: 1fr; }
       .footer-top { flex-direction: column; }
       .multi-order-notice { flex-direction: column; align-items: flex-start; }
+      .product-card.wide { grid-column: span 1; }
     }
   </style>
 </head>
@@ -488,91 +556,116 @@
 
       <!-- 250g House Blend -->
       <div class="product-card">
-        <p class="product-tag">House Blend · 250g</p>
-        <h2 class="product-name">House Blend</h2>
-        <p class="product-origin">Bali, Indonesia &amp; South America<br>Medium roast · Espresso &amp; filter</p>
-        <p class="product-desc">
-          Our everyday blend — sweet, balanced, and built for whatever you're brewing. Chocolate-forward with a clean finish. The one we pull every morning at the shop.
-        </p>
-        <div class="product-price-row">
-          <div class="product-price">
-            <span class="price-label">Price</span>
-            <span class="price-amount">Rp 275.000</span>
-            <span class="price-shipping">+ Rp 1.000.000 shipping</span>
+        <div class="product-img portrait">
+          <img src="assets/house-blend.jpg" alt="House Blend coffee beans" loading="lazy" />
+        </div>
+        <div class="product-body">
+          <p class="product-tag">House Blend · 250g</p>
+          <h2 class="product-name">House Blend</h2>
+          <p class="product-origin">Bali, Indonesia &amp; South America<br>Medium roast · Espresso &amp; filter</p>
+          <p class="product-desc">
+            Our everyday blend — sweet, balanced, and built for whatever you're brewing. Chocolate-forward with a clean finish. The one we pull every morning at the shop.
+          </p>
+          <div class="product-price-row">
+            <div class="product-price">
+              <span class="price-label">Price</span>
+              <span class="price-amount">Rp 275.000</span>
+              <span class="price-shipping">+ Rp 100.000 shipping</span>
+            </div>
+            <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
           </div>
-          <a href="https://checkout-staging.xendit.co/od/hb250" class="btn-buy">Order →</a>
         </div>
       </div>
 
       <!-- 1kg House Blend -->
       <div class="product-card">
-        <p class="product-tag">House Blend · 1kg</p>
-        <h2 class="product-name">House Blend</h2>
-        <p class="product-origin">Bali, Indonesia &amp; South America<br>Medium roast · Espresso &amp; filter</p>
-        <p class="product-desc">
-          The full kilo for serious drinkers. Same blend, better value. Great if you're opening a café or just go through a lot of coffee. We respect that.
-        </p>
-        <div class="product-price-row">
-          <div class="product-price">
-            <span class="price-label">Price</span>
-            <span class="price-amount">Rp 650.000</span>
-            <span class="price-shipping">+ Rp 1.500.000 shipping</span>
+        <div class="product-img portrait">
+          <img src="assets/house-blend.jpg" alt="House Blend coffee beans 1kg" loading="lazy" />
+        </div>
+        <div class="product-body">
+          <p class="product-tag">House Blend · 1kg</p>
+          <h2 class="product-name">House Blend</h2>
+          <p class="product-origin">Bali, Indonesia &amp; South America<br>Medium roast · Espresso &amp; filter</p>
+          <p class="product-desc">
+            The full kilo for serious drinkers. Same blend, better value. Great if you're opening a café or just go through a lot of coffee. We respect that.
+          </p>
+          <div class="product-price-row">
+            <div class="product-price">
+              <span class="price-label">Price</span>
+              <span class="price-amount">Rp 650.000</span>
+              <span class="price-shipping">+ Rp 150.000 shipping</span>
+            </div>
+            <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
           </div>
-          <a href="https://checkout-staging.xendit.co/od/hb1000" class="btn-buy">Order →</a>
         </div>
       </div>
 
       <!-- 250g Decaf -->
       <div class="product-card">
-        <p class="product-tag">Decaf Blend · 250g</p>
-        <h2 class="product-name">Decaf Blend</h2>
-        <p class="product-origin">Colombia &amp; Brazil<br>Swiss Water Process · Medium roast</p>
-        <p class="product-desc">
-          Decaf that doesn't taste like an apology. Swiss Water processed to keep the flavour intact — smooth, nutty, and genuinely worth drinking at midnight.
-        </p>
-        <div class="product-price-row">
-          <div class="product-price">
-            <span class="price-label">Price</span>
-            <span class="price-amount">Rp 350.000</span>
-            <span class="price-shipping">+ Rp 1.000.000 shipping</span>
+        <div class="product-img portrait">
+          <img src="assets/decaf.jpg" alt="Decaf Blend coffee beans" loading="lazy" />
+        </div>
+        <div class="product-body">
+          <p class="product-tag">Decaf Blend · 250g</p>
+          <h2 class="product-name">Decaf Blend</h2>
+          <p class="product-origin">Colombia &amp; Brazil<br>Swiss Water Process · Medium roast</p>
+          <p class="product-desc">
+            Decaf that doesn't taste like an apology. Swiss Water processed to keep the flavour intact — smooth, nutty, and genuinely worth drinking at midnight.
+          </p>
+          <div class="product-price-row">
+            <div class="product-price">
+              <span class="price-label">Price</span>
+              <span class="price-amount">Rp 350.000</span>
+              <span class="price-shipping">+ Rp 100.000 shipping</span>
+            </div>
+            <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
           </div>
-          <a href="https://checkout-staging.xendit.co/od/decaf250" class="btn-buy">Order →</a>
         </div>
       </div>
 
       <!-- 1kg Decaf -->
       <div class="product-card">
-        <p class="product-tag">Decaf Blend · 1kg</p>
-        <h2 class="product-name">Decaf Blend</h2>
-        <p class="product-origin">Colombia &amp; Brazil<br>Swiss Water Process · Medium roast</p>
-        <p class="product-desc">
-          A kilo of our best decaf. If you're stocking up a café or running an evening menu, this is the move. Same quality, full kilo.
-        </p>
-        <div class="product-price-row">
-          <div class="product-price">
-            <span class="price-label">Price</span>
-            <span class="price-amount">Rp 800.000</span>
-            <span class="price-shipping">+ Rp 1.500.000 shipping</span>
+        <div class="product-img portrait">
+          <img src="assets/decaf.jpg" alt="Decaf Blend coffee beans 1kg" loading="lazy" />
+        </div>
+        <div class="product-body">
+          <p class="product-tag">Decaf Blend · 1kg</p>
+          <h2 class="product-name">Decaf Blend</h2>
+          <p class="product-origin">Colombia &amp; Brazil<br>Swiss Water Process · Medium roast</p>
+          <p class="product-desc">
+            A kilo of our best decaf. If you're stocking up a café or running an evening menu, this is the move. Same quality, full kilo.
+          </p>
+          <div class="product-price-row">
+            <div class="product-price">
+              <span class="price-label">Price</span>
+              <span class="price-amount">Rp 800.000</span>
+              <span class="price-shipping">+ Rp 150.000 shipping</span>
+            </div>
+            <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
           </div>
-          <a href="https://checkout-staging.xendit.co/od/decaf1000" class="btn-buy">Order →</a>
         </div>
       </div>
 
-      <!-- Panama La Esmeralda -->
-      <div class="product-card featured">
-        <p class="product-tag">Single Origin · 100g</p>
-        <h2 class="product-name">Panama La Esmeralda<br>Diamond Mountain Natural</h2>
-        <p class="product-origin">Boquete, Chiriquí, Panama<br>Natural process · Light roast</p>
-        <p class="product-desc">
-          One of the most storied lots in specialty coffee — Hacienda La Esmeralda's Diamond Mountain natural. Jasmine, stonefruit, and a clarity that stays with you. 100g only; brew with intention.
-        </p>
-        <div class="product-price-row">
-          <div class="product-price">
-            <span class="price-label">Price</span>
-            <span class="price-amount">Rp 600.000</span>
-            <span class="price-shipping">+ Rp 1.000.000 shipping</span>
+      <!-- Panama La Esmeralda — wide landscape -->
+      <div class="product-card featured wide">
+        <div class="product-img">
+          <img src="assets/Panama.jpg" alt="Panama La Esmeralda Diamond Mountain Natural" loading="lazy" />
+        </div>
+        <div class="product-body">
+          <p class="product-tag">Single Origin · 100g</p>
+          <h2 class="product-name">Panama La Esmeralda<br>Diamond Mountain Natural</h2>
+          <p class="product-origin">Boquete, Chiriquí, Panama<br>Natural process · Light roast</p>
+          <p class="product-desc">
+            One of the most storied lots in specialty coffee — Hacienda La Esmeralda's Diamond Mountain natural. Jasmine, stonefruit, and a clarity that stays with you. 100g only; brew with intention.
+          </p>
+          <div class="product-price-row">
+            <div class="product-price">
+              <span class="price-label">Price</span>
+              <span class="price-amount">Rp 600.000</span>
+              <span class="price-shipping">+ Rp 100.000 shipping</span>
+            </div>
+            <a href="REPLACE_WITH_XENDIT_LINK" class="btn-buy">Order →</a>
           </div>
-          <a href="https://checkout-staging.xendit.co/od/diamondmtn100" class="btn-buy">Order →</a>
         </div>
       </div>
 
@@ -581,7 +674,7 @@
     <!-- Multi-order notice -->
     <div class="multi-order-notice">
       <div class="notice-text">
-        <span class="notice-label">Ordering multiple items or within Indonesia?</span>
+        <span class="notice-label">Ordering multiple items?</span>
         <p class="notice-body">
           Message us on Instagram and we'll put together a <strong>combined order with better shipping rates</strong>. We reply fast.
         </p>

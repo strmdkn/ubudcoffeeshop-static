@@ -482,12 +482,20 @@
       color: rgba(245,239,224,0.3);
       text-transform: uppercase;
     }
-    .footer-made {
+    .option-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
       font-family: 'Space Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.08em;
-      color: rgba(245,239,224,0.2);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      text-decoration: none;
+      transition: gap 0.2s;
+      margin-top: auto;
     }
+    .option-link:hover { gap: 0.7rem; }
 
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
